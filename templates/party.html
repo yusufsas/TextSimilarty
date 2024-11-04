@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My E-Ticaret Sitesi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .product-card img {
+            height: 200px;
+            object-fit: cover;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">My E-Ticaret</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Anasayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Ürünler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Hakkımızda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">İletişim</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sepet <span class="badge bg-primary">0</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="display-4">En İyi Ürünler Burada!</h1>
+                <p class="lead">Size özel seçilmiş en kaliteli ürünleri keşfedin ve alışveriş yapmanın tadını çıkarın.</p>
+                <a href="#" class="btn btn-primary btn-lg">Alışverişe Başla</a>
+            </div>
+            <div class="col-md-6">
+                <img src="https://via.placeholder.com/500" class="img-fluid" alt="Ürün Görseli">
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Section -->
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Popüler Ürünler</h2>
+        <div class="row">
+            <!-- Ürün Kartları -->
+             {% for product in products %}
+            <div class="col-md-3 mb-4">
+                <div class="card product-card">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="Ürün">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{product.title}}</h5>
+                        <p class="card-text">{{product.price}}</p>
+                        <a href="#" class="btn btn-outline-primary btn-sm">Sepete Ekle</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- Diğer Ürün Kartları -->
+            <!-- <div class="col-md-3 mb-4">
+                <div class="card product-card">
+                    <img src="https://via.placeholder.com/200x200" class="card-img-top" alt="Ürün">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Ürün Adı</h5>
+                        <p class="card-text">₺149.99</p>
+                        <a href="#" class="btn btn-outline-primary btn-sm">Sepete Ekle</a>
+                    </div>
+                </div>
+            </div> -->
+            <!-- 2 Kart Daha Eklenebilir -->
+        </div>
+    </div>
+    <div class="pagination">
+        <span>
+            {% if products.has_previous %}
+                <a href="?page={{ products.previous_page_number }}">Önceki</a>
+            {% endif %}
+        </span>
+
+        <span>Sayfa {{ products.number }} / {{ products.paginator.num_pages }}</span>
+
+        <span>
+            {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}">Sonraki</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <div class="container">
+            <p class="mb-0">&copy; 2024 My E-Ticaret Sitesi | Tüm Hakları Saklıdır.</p>
+            <p><a href="#">Kullanım Koşulları</a> | <a href="#">Gizlilik Politikası</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

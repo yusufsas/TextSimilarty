@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Similar Products</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Ek stil ayarları */
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 10px;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .card-text {
+            color: #6c757d;
+        }
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .pagination .page-link {
+            color: #007bff;
+        }
+        .pagination .page-item.disabled .page-link {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4 display-6">Similar Products</h1>
+
+        <!-- Similar kayıtlarını listeleyin -->
+        <div class="row">
+            {% for similar in similars %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ similar.title_mark.title }} - {{ similar.title_part.title }}</h5>
+                            <p class="card-text">Benzerlik Oranı: <strong>{{ similar.ratio }}%</strong></p>
+                        </div>
+                        <div class="card-footer text-center bg-light">
+                            <button class="btn btn-outline-primary btn-sm">Detay</button>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-center">Hiç benzer ürün bulunamadı.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Sayfalandırma bağlantıları -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <!-- Önceki Sayfa -->
+                {% if similars.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ similars.previous_page_number }}" aria-label="Önceki">
+                            <span aria-hidden="true">&laquo; Önceki</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo; Önceki</span>
+                    </li>
+                {% endif %}
+        
+                <!-- Sayfa numaralarını listele -->
+                {% for num in similars.paginator.page_range %}
+                    {% if num == similars.number %}
+                        <!-- Geçerli Sayfa -->
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">{{ num }} <span class="sr-only">(current)</span></span>
+                        </li>
+                    {% elif num > similars.number|add:'-3' and num < similars.number|add:'3' %}
+                        <!-- Yakın Sayfalar -->
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% elif num == 1 or num == similars.paginator.num_pages %}
+                        <!-- İlk ve Son Sayfa -->
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% elif num == similars.number|add:'-3' or num == similars.number|add:'3' %}
+                        <!-- Ayrıştırıcı Üç Nokta -->
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endfor %}
+        
+                <!-- Sonraki Sayfa -->
+                {% if similars.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ similars.next_page_number }}" aria-label="Sonraki">
+                            <span aria-hidden="true">Sonraki &raquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Sonraki &raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap JS (Optional for interactive components) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
